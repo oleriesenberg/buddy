@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.files = [
     "lib/buddy.rb",
      "lib/buddy/service.rb",
+     "lib/rack/facebook.rb",
      "test/test_buddy.rb"
   ]
   s.homepage = %q{http://buddybrand.de}
