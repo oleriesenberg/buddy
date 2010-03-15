@@ -14,7 +14,7 @@ begin
     s.homepage = "http://buddybrand.de"
     s.description = "buddybrand's facebook library"
     s.authors = ["Ole Riesenberg"]
-    s.files = FileList["[A-Z]*", "{lib,test}/**/*.rb"]
+    s.files = FileList["{lib,test}/**/*.rb"]
     s.add_dependency "mini_fb", ">= 0.2.2"
   end
   Jeweler::GemcutterTasks.new

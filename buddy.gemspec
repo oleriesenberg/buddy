@@ -9,19 +9,21 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ole Riesenberg"]
-  s.date = %q{2010-03-12}
+  s.date = %q{2010-03-15}
   s.description = %q{buddybrand's facebook library}
   s.email = %q{labs@buddybrand.de}
   s.files = [
-    "Rakefile",
-     "VERSION.yml",
-     "lib/fb_buddy.rb"
+    "lib/buddy.rb",
+     "test/test_buddy.rb"
   ]
   s.homepage = %q{http://buddybrand.de}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{buddybrand's facebook library}
+  s.test_files = [
+    "test/test_buddy.rb"
+  ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
