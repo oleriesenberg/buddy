@@ -1,1 +1,0 @@
-require 'fb_buddy'
