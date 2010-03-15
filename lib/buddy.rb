@@ -1,5 +1,7 @@
 require 'mini_fb'
 
+require 'buddy/service'
+
 module Buddy
   @buddy_config = {}
 

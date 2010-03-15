@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.email = %q{labs@buddybrand.de}
   s.files = [
     "lib/buddy.rb",
+     "lib/buddy/service.rb",
      "test/test_buddy.rb"
   ]
   s.homepage = %q{http://buddybrand.de}
