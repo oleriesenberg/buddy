@@ -3,6 +3,7 @@ require 'mini_fb'
 require 'rack/facebook'
 
 require 'buddy/service'
+require 'buddy/railtie'
 
 module Buddy
   @buddy_config = {}
