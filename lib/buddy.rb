@@ -1,15 +1,18 @@
+require 'bundler'
+
 require 'mini_fb'
 
 require 'rack/facebook'
-
-require 'buddy/service'
 require 'buddy/railtie'
+
+require 'buddy/user'
+require 'buddy/session'
+require 'buddy/service'
 
 module Buddy
   @buddy_config = {}
 
   class << self
-    attr_accessor :current_config
     attr_accessor :logger
 
     def load_configuration(yaml)
@@ -35,14 +38,26 @@ module Buddy
     def use_application(api_key)
       buddy_config.each do |c|
         if c[1]["api_key"] == api_key
-          return self.current_config = c[1]
-	end
+	  return self.current_config = c[1]
+        end
       end
+    end
+
+    def current_config
+      Thread.current['current_buddy_config']
+    end
+
+    def current_config=(config)
+      Thread.current['current_buddy_config'] = config
     end
   end
 end
 
-buddy_config = "#{Bundler.root}/config/buddy.yml"
+buddy_config = File.join(Bundler.root, "config", "buddy.yml")
 
 BUDDY = Buddy.load_configuration(buddy_config)
+Buddy.logger = Rails.logger
 
+require 'buddy/rails/backwards_compatible_param_checks'
+require 'buddy/rails/controller'
+require 'buddy/rails/controller_extensions'
