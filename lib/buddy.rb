@@ -17,7 +17,7 @@ module Buddy
 
     def load_configuration(yaml)
       return false unless File.exist?(yaml)
-      @buddy_config = YAML.load(ERB.new(File.read(yaml)).result)[Rails.env]
+      @buddy_config = YAML.load(ERB.new(File.read(yaml)).result)[::Rails.env]
       self.current_config = buddy_config['default']
 
       buddy_config
@@ -57,7 +57,9 @@ buddy_config = File.join(Bundler.root, "config", "buddy.yml")
 
 BUDDY = Buddy.load_configuration(buddy_config)
 Buddy.logger = Rails.logger
+#Rails.application.config.action_controller.asset_host = Buddy.buddy_config['default']['callback_url']
 
 require 'buddy/rails/backwards_compatible_param_checks'
 require 'buddy/rails/controller'
 require 'buddy/rails/controller_extensions'
+

@@ -2,10 +2,10 @@ module ::ActionController
   class Base
     def self.inherited_with_buddy(subclass)
       inherited_without_buddy(subclass)
-      if subclass.to_s == "ApplicationController"
+      #if subclass.to_s == "ApplicationController"
         subclass.send(:include, Buddy::Rails::Controller)
         #subclass.helper Buddy::Rails::Helpers
-      end
+      #end
     end
     class << self
       alias_method_chain :inherited, :buddy

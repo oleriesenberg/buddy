@@ -23,15 +23,22 @@ module Buddy
       Thread.current['facebook_session'] = session
     end
 
-    def login_url(options={})
+    def call(api_method, params = {}, options = {})
+      params.merge!(:uids => uid, :session_key => session_key)
+      Buddy::Service.call(api_method, params, options)
+    end
+
+    def login_url(options = {})
       options = default_login_url_options.merge(options)
-      "#{Facebooker.login_url_base}#{login_url_optional_parameters(options)}"
+      "http://www.facebook.com/login.php?api_key=#{Buddy.current_config['api_key']}&v=1.0#{login_url_optional_parameters(options)}"
     end
 
-    def install_url(options={})
-      "#{Facebooker.install_url_base}#{install_url_optional_parameters(options)}"
+    def install_url(options = {})
+      "http://www.facebook.com/install.php?api_key=#{Buddy.current_config['api_key']}&v=1.0#{install_url_optional_parameters(options)}"
     end
 
+    
+    
     # The url to get user to approve extended permissions
     # http://wiki.developers.facebook.com/index.php/Extended_permission
     #
@@ -140,6 +147,10 @@ module Buddy
 
     def user
       @user ||= Buddy::User.new(@uid, self)
+    end
+    
+    def uid
+      @uid
     end
 
     def session_key

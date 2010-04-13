@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ole Riesenberg"]
-  s.date = %q{2010-04-09}
+  s.date = %q{2010-04-12}
   s.description = %q{buddybrand's facebook library}
   s.email = %q{labs@buddybrand.de}
   s.files = [
@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
      "lib/buddy/rails/backwards_compatible_param_checks.rb",
      "lib/buddy/rails/controller.rb",
      "lib/buddy/rails/controller_extensions.rb",
+     "lib/buddy/rails/url_helper.rb",
      "lib/buddy/railtie.rb",
      "lib/buddy/service.rb",
      "lib/buddy/session.rb",
