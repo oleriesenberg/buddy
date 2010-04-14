@@ -11,6 +11,7 @@ module Buddy
       ActionView::Helpers::UrlHelper.send(:include, Buddy::Rails::UrlHelper)
 
       Mime::Type.register "text/html", :fbml
+      Mime::Type.register "text/javascript", :fbjs
       Buddy.logger = ::Rails.logger
     end
   end
