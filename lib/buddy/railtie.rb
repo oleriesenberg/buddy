@@ -7,6 +7,7 @@ module Buddy
     initializer "buddy.configure_rails_initialization" do |app|
       app.config.middleware.insert_before(ActionDispatch::RemoteIp, ::Rack::Facebook::RemoteIp)
       app.config.middleware.insert_before(ActionDispatch::ParamsParser, ::Rack::Facebook::ParamsParser)
+      app.config.action_controller.asset_host = Buddy.buddy_config['default']['callback_url']
 
       ActionView::Helpers::UrlHelper.send(:include, Buddy::Rails::UrlHelper)
 
