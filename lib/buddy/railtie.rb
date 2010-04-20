@@ -9,7 +9,7 @@ module Buddy
       app.config.middleware.insert_before(ActionDispatch::ParamsParser, ::Rack::Facebook::ParamsParser)
       app.config.action_controller.asset_host = Buddy.buddy_config['default']['callback_url']
 
-      ActionController::Base.send(:include, Buddy::Rails::UrlHelper)
+      ActionView::Helpers::UrlHelper.send(:include, Buddy::Rails::UrlHelper)
 
       Mime::Type.register "text/html", :fbml
       Mime::Type.register "text/javascript", :fbjs
