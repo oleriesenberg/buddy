@@ -85,7 +85,6 @@ module Rack
       end
 
       def convert_parameters!(params)
-
         params.each do |key, value|
           case key
           when 'fb_sig_added', 'fb_sig_in_canvas', 'fb_sig_in_new_facebook', 'fb_sig_position_fix', 'fb_sig_is_ajax'

@@ -1,6 +1,14 @@
+require 'observer'
 module Buddy
   module Service
     class << self
+      def call(api_method, params = {}, options = {})
+        Buddy.caller.call(api_method, params, options)
+      end
+    end
+    
+    class Caller
+      include Observable
       def call(api_method, params = {}, options = {})
         begin
           application = options[:app] || 'default'
@@ -8,6 +16,9 @@ module Buddy
           raise ArgumentError.new("app not specified in buddy.yml")
         end
 
+        changed
+        notify_observers(api_method, params, options)
+          
         result = nil
         time = Benchmark.realtime do
           result = MiniFB.call(Buddy.buddy_config[application]["api_key"],

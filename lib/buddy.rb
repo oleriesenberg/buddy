@@ -12,7 +12,7 @@ module Buddy
   @buddy_config = {}
 
   class << self
-    attr_accessor :logger
+    attr_accessor :logger, :caller
 
     def load_configuration(yaml)
       return false unless File.exist?(yaml)
@@ -37,7 +37,7 @@ module Buddy
     def use_application(api_key)
       buddy_config.each do |c|
         if c[1]["api_key"] == api_key
-	  return self.current_config = c[1]
+          return self.current_config = c[1]
         end
       end
     end
@@ -56,6 +56,7 @@ buddy_config = File.join(Bundler.root, "config", "buddy.yml")
 
 BUDDY = Buddy.load_configuration(buddy_config)
 Buddy.logger = Rails.logger
+Buddy.caller = Buddy::Service::Caller.new
 
 require 'buddy/rails/backwards_compatible_param_checks'
 require 'buddy/rails/controller'
