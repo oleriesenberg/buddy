@@ -1,11 +1,5 @@
 module ::ActionController
   class Base
-    
-    def response_code_for_rescue_with_buddy(exception)
-      pretty_facebook_errors? ? 200 : response_code_for_rescue_without_buddy(exception)
-    end
-    alias_method_chain :response_code_for_rescue, :buddy
-
     def self.inherited_with_buddy(subclass)
       inherited_without_buddy(subclass)
       #if subclass.to_s == "ApplicationController"
@@ -16,7 +10,6 @@ module ::ActionController
     class << self
       alias_method_chain :inherited, :buddy
     end
-    
   end
 end
 
