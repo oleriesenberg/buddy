@@ -30,11 +30,12 @@ module Buddy
 
     def login_url(options = {})
       options = default_login_url_options.merge(options)
-      "http://www.facebook.com/login.php?api_key=#{Buddy.current_config['api_key']}&v=1.0#{login_url_optional_parameters(options)}"
+      "http://www.facebook.com/connect/uiserver.php?app_id=#{Buddy.current_config['app_id']}&next=&display=page&locale=de_DE&return_session=0&fbconnect=0&canvas=1&legacy_return=1&method=permissions.request#{"&perms="+Buddy.current_config['perms'] if Buddy.current_config['perms']}#{login_url_optional_parameters(options)}"
     end
 
     def install_url(options = {})
-      "http://www.facebook.com/install.php?api_key=#{Buddy.current_config['api_key']}&v=1.0#{install_url_optional_parameters(options)}"
+      options = default_login_url_options.merge(options)
+      "http://www.facebook.com/connect/uiserver.php?app_id=#{Buddy.current_config['app_id']}&next=&display=page&locale=de_DE&return_session=0&fbconnect=0&canvas=1&legacy_return=1&method=permissions.request#{"&perms="+Buddy.current_config['perms'] if Buddy.current_config['perms']}#{login_url_optional_parameters(options)}"
     end
 
     
