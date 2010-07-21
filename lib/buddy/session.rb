@@ -28,6 +28,11 @@ module Buddy
       Buddy::Service.call(api_method, params, options)
     end
 
+    def get(resource, params = {})
+      params.merge!(:access_token => access_token)
+      Buddy::Service.get(resource, params)
+    end
+
     def login_url(options = {})
 #      options = default_login_url_options.merge(options)
 #      "http://www.facebook.com/connect/uiserver.php?app_id=#{Buddy.current_config['app_id']}&next=&display=page&locale=de_DE&return_session=0&fbconnect=0&canvas=1&legacy_return=1&method=permissions.request#{"&perms="+Buddy.current_config['perms'] if Buddy.current_config['perms']}#{login_url_optional_parameters(options)}"
