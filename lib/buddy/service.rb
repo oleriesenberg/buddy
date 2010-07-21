@@ -1,5 +1,8 @@
 require 'observer'
 module Buddy
+  class OAuthException < ArgumentError
+  end
+
   module Service
     class << self
       def call(api_method, params = {}, options = {})
@@ -7,7 +10,9 @@ module Buddy
       end
 
       def get(resource, params = {})
-        GraphApiClient.get(resource, :query => params)
+        result = GraphApiClient.get(resource, :query => params).parsed_response
+        raise OAuthException.new(result["error"]["message"]) if result["error"]
+	result
       end
     end
 
