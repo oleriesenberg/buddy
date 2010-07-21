@@ -16,6 +16,9 @@ begin
     s.authors = ["Ole Riesenberg"]
     s.files = FileList["{lib,test}/**/*.rb"]
     s.add_dependency "mini_fb", ">= 0.2.2"
+    s.add_dependency "yajl-ruby"
+    s.add_dependency "ruby-hmac"
+    s.add_dependency "httparty"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

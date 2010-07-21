@@ -1,6 +1,8 @@
 require 'bundler'
 
+require 'yajl'
 require 'mini_fb'
+require 'httparty'
 
 require 'rack/facebook'
 

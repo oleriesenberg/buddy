@@ -7,7 +7,7 @@ module Buddy
         controller.helper_attr :facebook_session_parameters
         controller.helper_method :request_comes_from_facebook?
       end
-      
+
       def redirect_to(*args)
         if request_is_for_a_facebook_canvas? and !request_is_facebook_tab?
           render :text => fbml_redirect_tag(*args)
@@ -74,7 +74,7 @@ module Buddy
 
         if ['user', 'session_key'].all? {|element| facebook_params[element]}
           @facebook_session = new_facebook_session
-          @facebook_session.secure_with!(facebook_params['session_key'], facebook_params['user'], facebook_params['expires'])
+          @facebook_session.secure_with!(facebook_params['session_key'], params['oauth_token'], facebook_params['user'], facebook_params['expires'])
           @facebook_session
         end
       end
@@ -121,7 +121,7 @@ module Buddy
           collection
         end
       end
-      
+
       def facebook_params
         @facebook_params ||= verified_facebook_params
       end
@@ -142,11 +142,11 @@ module Buddy
           request.format = :fbml
         end
       end
-      
+
       def fbml_redirect_tag(url,*args)
         "<fb:redirect url=\"#{url_for(url)}\" />"
       end
-      
+
       def request_is_fb_ping?
         !params['fb_sig'].blank?
       end
@@ -166,7 +166,7 @@ module Buddy
       def request_is_facebook_ajax?
         one_or_true(params["fb_sig_is_mockajax"]) || one_or_true(params["fb_sig_is_ajax"])
       end
-      
+
       def ensure_authenticated_to_facebook
         set_facebook_session || create_new_facebook_session_and_redirect!
       end
@@ -177,25 +177,25 @@ module Buddy
 
       def default_after_facebook_login_url
         omit_keys = ["_method", "format"]
-        options = (params||{}).clone 
-        options = options.reject{|k,v| k.to_s.match(/^fb_sig/) or omit_keys.include?(k.to_s)} 
+        options = (params||{}).clone
+        options = options.reject{|k,v| k.to_s.match(/^fb_sig/) or omit_keys.include?(k.to_s)}
         url_for(options)
       end
-        
+
       def create_new_facebook_session_and_redirect!
         session[:facebook_session] = new_facebook_session
         next_url = after_facebook_login_url || default_after_facebook_login_url
         top_redirect_to session[:facebook_session].login_url({:next => next_url, :canvas=>params[:fb_sig_in_canvas]}) unless @installation_required
         false
       end
-      
+
       def ensure_application_is_installed_by_facebook_user
         @installation_required = true
         returning ensure_authenticated_to_facebook && application_is_installed? do |authenticated_and_installed|
           application_is_not_installed_by_facebook_user unless authenticated_and_installed
         end
       end
-      
+
       def request_comes_from_facebook?
         request_is_for_a_facebook_canvas? || request_is_facebook_ajax? || request_is_fb_ping?
       end

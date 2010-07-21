@@ -5,8 +5,17 @@ module Buddy
       def call(api_method, params = {}, options = {})
         Buddy.caller.call(api_method, params, options)
       end
+
+      def get(resource, params = {})
+        GraphApiClient.get(resource, :query => params)
+      end
     end
-    
+
+    class GraphApiClient
+      include HTTParty
+      base_uri 'https://graph.facebook.com'
+    end
+
     class Caller
       include Observable
       def call(api_method, params = {}, options = {})
@@ -18,7 +27,7 @@ module Buddy
 
         changed
         notify_observers(api_method, params, options)
-          
+
         result = nil
         time = Benchmark.realtime do
           result = MiniFB.call(Buddy.buddy_config[application]["api_key"],

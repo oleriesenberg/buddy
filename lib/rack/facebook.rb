@@ -23,19 +23,19 @@ module Rack
   #     env['REQUEST_URI'] =~ /^\/facebook_only/
   #   end
   #
-  
+
   module Facebook
     class RemoteIp
       def initialize(app)
         @app = app
       end
-      
+
       def call(env)
         env['REMOTE_ADDR'] = env['X-FB-USER-REMOTE-ADDR'] if env['X-FB-USER-REMOTE-ADDR']
         @app.call(env)
       end
     end
-    
+
     class ParamsParser
       def initialize(app, &condition)
         @app = app
@@ -61,6 +61,17 @@ module Rack
         end
         env['REQUEST_METHOD'] = fb_params["request_method"] if fb_params["request_method"]
         convert_parameters!(request.params)
+
+        signed_request = request.params["signed_request"]
+        signature, signed_params = signed_request.split('.')
+        signature = Base64.decode64(signature)
+        signed_params = Yajl::Parser.new.parse(Base64.decode64(signed_params))
+
+        request.params["signature"] = signature
+        signed_params.each do |k,v|
+          request.params[k] = v
+        end
+
         @app.call(env)
       end
 

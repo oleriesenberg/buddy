@@ -40,8 +40,8 @@ module Buddy
       "http://www.facebook.com/connect/uiserver.php?app_id=#{Buddy.current_config['app_id']}&next=&display=page&locale=de_DE&return_session=0&fbconnect=0&canvas=1&legacy_return=1&method=permissions.request#{"&perms="+Buddy.current_config['perms'] if Buddy.current_config['perms']}#{login_url_optional_parameters(options)}"
     end
 
-    
-    
+
+
     # The url to get user to approve extended permissions
     # http://wiki.developers.facebook.com/index.php/Extended_permission
     #
@@ -71,7 +71,7 @@ module Buddy
     end
 
     def install_url_optional_parameters(options)
-      optional_parameters = []      
+      optional_parameters = []
       optional_parameters += add_next_parameters(options)
       optional_parameters.join
     end
@@ -84,7 +84,7 @@ module Buddy
     end
 
     def login_url_optional_parameters(options)
-      # It is important that unused options are omitted as stuff like &canvas=false will still display the canvas. 
+      # It is important that unused options are omitted as stuff like &canvas=false will still display the canvas.
       optional_parameters = []
       optional_parameters += add_next_parameters(options)
       optional_parameters << "&skipcookie=true" if options[:skip_cookie]
@@ -106,6 +106,7 @@ module Buddy
       @secret_key     = secret_key
       @batch_request  = nil
       @session_key    = nil
+      @access_token   = nil
       @uid            = nil
       @auth_token     = nil
       @secret_from_session = nil
@@ -135,14 +136,15 @@ module Buddy
     def secure!(args = {})
       response = Buddy::Service.call('facebook.auth.getSession', {:auth_token => auth_token, :generate_session_secret => args[:generate_session_secret]}) ? "1" : "0"
       secure_with!(response['session_key'], response['uid'], response['expires'], response['secret'])
-    end    
-    
+    end
+
     def secure_with_session_secret!
       self.secure!(:generate_session_secret => true)
     end
 
-    def secure_with!(session_key, uid = nil, expires = nil, secret_from_session = nil)
+    def secure_with!(session_key, access_token, uid = nil, expires = nil, secret_from_session = nil)
       @session_key = session_key
+      @access_token = access_token
       @uid = uid ? Integer(uid) : Buddy::Service.call('facebook.users.getLoggedInUser', {:session_key => session_key})
       @expires = expires ? Integer(expires) : 0
       @secret_from_session = secret_from_session
@@ -151,13 +153,17 @@ module Buddy
     def user
       @user ||= Buddy::User.new(@uid, self)
     end
-    
+
     def uid
       @uid
     end
 
     def session_key
       @session_key
+    end
+
+    def access_token
+      @access_token
     end
   end
 end
