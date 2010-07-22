@@ -29,12 +29,12 @@ module Buddy
     end
 
     def get(resource, params = {})
-      params.merge!(:access_token => access_token)
+      params.merge!(:access_token => access_token) unless params[:access_token]
       Buddy::Service.get(resource, params)
     end
 
     def post(resource, params = {})
-      params.merge!(:access_token => access_token)
+      params.merge!(:access_token => access_token) unless params[:access_token]
       Buddy::Service.post(resource, params)
     end
 
