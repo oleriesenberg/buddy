@@ -1,5 +1,7 @@
 require 'bundler'
 
+require 'base64'
+require 'openssl'
 require 'yajl'
 require 'mini_fb'
 require 'httparty'
