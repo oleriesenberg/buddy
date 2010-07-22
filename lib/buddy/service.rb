@@ -12,7 +12,13 @@ module Buddy
       def get(resource, params = {})
         result = GraphApiClient.get(resource, :query => params).parsed_response
         raise OAuthException.new(result["error"]["message"]) if result["error"]
-	result
+	      result
+      end
+
+      def post(resource, params = {})
+        result = GraphApiClient.post(resource, :query => params).parsed_response
+        raise OAuthException.new(result["error"]["message"]) if result["error"]
+	      result
       end
     end
 
