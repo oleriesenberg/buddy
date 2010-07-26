@@ -64,18 +64,16 @@ module Rack
 
         signed_request = request.params["signed_request"]
         if signed_request
-          signature, signed_params = signed_request.split('.') 
-        else
-          signature, signed_params = []
-        end
+          signature, signed_params = signed_request.split('.')
 
-        unless signed_request_is_valid?(Buddy.current_config['secret'], signature, signed_params)
-          return Rack::Response.new(["Invalid Facebook signature"], 400).finish
-        end
+          unless signed_request_is_valid?(Buddy.current_config['secret'], signature, signed_params)
+            return Rack::Response.new(["Invalid Facebook signature"], 400).finish
+          end
         
-        signed_params = Yajl::Parser.new.parse(base64_url_decode(signed_params))
-        signed_params.each do |k,v|
-          request.params[k] = v
+          signed_params = Yajl::Parser.new.parse(base64_url_decode(signed_params))
+          signed_params.each do |k,v|
+            request.params[k] = v
+          end
         end
 
         @app.call(env)
