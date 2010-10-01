@@ -56,9 +56,7 @@ module Rack
           end
 
           signed_params = Yajl::Parser.new.parse(base64_url_decode(signed_params))
-          signed_params.each do |k,v|
-            request.params[k] = v
-          end
+	  request.params[:fb] = signed_params
         end
 
         @app.call(env)

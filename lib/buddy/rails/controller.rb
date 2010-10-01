@@ -26,15 +26,15 @@ module Buddy
       end
 
       def application_is_installed?
-        !params[:oauth_token].blank?
+        !params[:fb][:oauth_token].blank?
       end
 
       def request_is_facebook_canvas?
-        params[:profile_id].blank?
+        params[:fb][:profile_id].blank?
       end
 
       def request_is_facebook_tab?
-        !params[:profile_id].blank?
+        !params[:fb][:profile_id].blank?
       end
 
       def clear_facebook_session_information
@@ -48,7 +48,7 @@ module Buddy
 
       def create_facebook_session
         @facebook_session = new_facebook_session
-        @facebook_session.secure!(params[:user_id], params[:oauth_token], params[:expires])
+        @facebook_session.secure!(params[:fb][:user_id], params[:fb][:oauth_token], params[:fb][:expires])
         @facebook_session.secured?
       end
 
