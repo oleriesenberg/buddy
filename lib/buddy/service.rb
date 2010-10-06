@@ -41,11 +41,11 @@ module Buddy
 
 	fun = case api_method
 	  when 'fql.query'
-            -> { MiniFB.fql(params[:access_token], params[:query], options) }
+            lambda { MiniFB.fql(params[:access_token], params[:query], options) }
           when 'fql.multiquery'
-            -> { MiniFB.multifql(params[:access_token], params[:queries], options) }
+            lambda { MiniFB.multifql(params[:access_token], params[:queries], options) }
           else
-            -> do
+            lambda do
 	      if params[:access_token]
 	        options[:params] = params
                 MiniFB.rest(params[:access_token], api_method, options)
