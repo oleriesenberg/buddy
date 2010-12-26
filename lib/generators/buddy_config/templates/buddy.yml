@@ -1,0 +1,23 @@
+development:
+  default:
+    app_id: # your facebook app id
+    secret: # your app secret
+    canvas_page_name: # your canvas name
+    callback_url: # your app callback url, e.g. http://example.com
+    perms: # a comma separated list of required extended permissions, e.g. user_photos,email
+
+test:
+  default:
+    app_id:
+    secret: 
+    canvas_page_name:
+    callback_url:
+    perms:
+
+production:
+  default:
+    app_id:
+    secret:
+    canvas_page_name:
+    callback_url:
+    perms:

@@ -1,0 +1,8 @@
+Description:
+    Generates the buddy config
+
+Example:
+    rails generate buddy_config
+
+    This will create:
+        config/buddy.yml
