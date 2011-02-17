@@ -1,11 +1,10 @@
-module Rack
-  # This Rack middleware checks the signed_request, and
-  # appends the payload to Rails params.
-  #
-  # If the signature is wrong, it returns a "400 Invalid Facebook Signature".
-  #
+module Buddy
+  module Middleware
 
-  module Facebook
+    # This Rack middleware checks the signed_request, and
+    # appends the payload to Rails params.
+    #
+    # If the signature is wrong, it returns a "400 Invalid Facebook Signature".
     class ParamsParser
       def initialize(app, &condition)
         @app = app

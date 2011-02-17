@@ -6,7 +6,7 @@ require 'yajl'
 require 'mini_fb'
 require 'httparty'
 
-require 'rack/facebook'
+require 'buddy/middleware'
 
 require 'buddy/user'
 require 'buddy/session'
