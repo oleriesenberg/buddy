@@ -17,6 +17,7 @@ module Rack
 
         request = Rack::Request.new(env)
 
+        request.params["signed_request"] = env['HTTP_X_SIGNED_REQUEST'] if env['HTTP_X_SIGNED_REQUEST'] && !request.params["signed_request"]
         signed_request = request.params["signed_request"]
         if signed_request
           signature, signed_params = signed_request.split('.')
@@ -26,7 +27,7 @@ module Rack
           end
 
           signed_params = Yajl::Parser.new.parse(base64_url_decode(signed_params))
-	  request.params[:fb] = signed_params
+          request.params[:fb] = signed_params
         end
 
         @app.call(env)
