@@ -62,7 +62,6 @@ BUDDY = Buddy.load_configuration(buddy_config)
 Buddy.logger = Rails.logger
 Buddy.caller = Buddy::Service::Caller.new
 
-require 'buddy/rails/backwards_compatible_param_checks'
 require 'buddy/rails/url_helper'
 require 'buddy/rails/controller'
 require 'buddy/rails/controller_extensions'
