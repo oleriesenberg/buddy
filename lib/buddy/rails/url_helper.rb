@@ -2,19 +2,16 @@ module Buddy
   module Rails
     module UrlHelper
       def url_for(options = {})
-        options ||= {}
-        opts = case options
-        when Hash
-          options.merge!({ :only_path => true }) #unless options[:canvas] == false
-        else
-          options
-        end
-        url = super(opts)
+        only_path = options[:only_path] || false
+        options.merge!({ :only_path => true }) if options.is_a?(Hash) && options[:canvas] != false
 
-        if url.include?("http://")  #todo: make it better
+        url = super(options)
+
+        if url[0..6] == 'http://'
           url
         elsif options.is_a?(Hash) && options[:canvas] == false
-          "#{Buddy.current_config["callback_url"]}#{url}"
+          base = only_path ? '' : Buddy.current_config["callback_url"]
+          base + url
         else
           "http://apps.facebook.com/#{Buddy.current_config["canvas_page_name"]}#{url}"
         end
