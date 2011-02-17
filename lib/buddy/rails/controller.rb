@@ -24,6 +24,10 @@ module Buddy
         @facebook_session
       end
 
+      def request_comes_from_facebook?
+        !params[:signed_request].blank? # It already has been verified in middleware, so we can trust it here.
+      end
+
       def application_is_installed?
         !params[:fb][:oauth_token].blank?
       end
