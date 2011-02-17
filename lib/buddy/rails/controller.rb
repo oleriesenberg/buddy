@@ -1,7 +1,6 @@
 module Buddy
   module Rails
     module Controller
-      include Buddy::Rails::BackwardsCompatibleParamChecks
       include Buddy::Rails::UrlHelper
 
       def self.included(controller)
