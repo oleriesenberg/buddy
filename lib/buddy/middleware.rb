@@ -16,8 +16,9 @@ module Buddy
 
         request = Rack::Request.new(env)
 
-        request.params["signed_request"] = env['HTTP_X_SIGNED_REQUEST'] if env['HTTP_X_SIGNED_REQUEST'] && !request.params["signed_request"]
-        signed_request = request.params["signed_request"]
+        signed_request = env['HTTP_X_SIGNED_REQUEST'].split(',').first if env['HTTP_X_SIGNED_REQUEST']
+        signed_request = request.params["signed_request"] unless signed_request
+        puts request.params["signed_request"]
         if signed_request
           signature, signed_params = signed_request.split('.')
 
