@@ -10,13 +10,21 @@ module Buddy
       end
 
       def get(resource, params = {})
-        result = GraphApiClient.get(resource, :query => params).parsed_response
-        raise OAuthException.new(result["error"]["message"]) if result["error"]
-        result
+        call_graph(:get, resource, params)
       end
 
       def post(resource, params = {})
-        result = GraphApiClient.post(resource, :query => params).parsed_response
+        call_graph(:post, resource, params)
+      end
+
+      private
+      def call_graph(method, resource, params)
+        result = nil
+        time = Benchmark.realtime do
+          result = GraphApiClient.send(method, resource, :query => params).parsed_response
+        end
+        Buddy.logger.info("GraphAPI: #{method} #{resource} - #{time}")
+
         raise OAuthException.new(result["error"]["message"]) if result["error"]
         result
       end
@@ -39,15 +47,15 @@ module Buddy
         changed
         notify_observers(api_method, params, options)
 
-	fun = case api_method
-	  when 'fql.query'
+        fun = case api_method
+          when 'fql.query'
             lambda { MiniFB.fql(params[:access_token], params[:query], options) }
           when 'fql.multiquery'
             lambda { MiniFB.multifql(params[:access_token], params[:queries], options) }
           else
             lambda do
-	      if params[:access_token]
-	        options[:params] = params
+              if params[:access_token]
+                options[:params] = params
                 MiniFB.rest(params[:access_token], api_method, options)
               else
                 MiniFB.call(Buddy.buddy_config[application]["api_key"],
@@ -55,14 +63,14 @@ module Buddy
                   api_method,
                   params.stringify_keys)
               end
-	    end
-	end
+            end
+        end
 
         result = nil
         time = Benchmark.realtime do
           result = fun.call
         end
-        Buddy.logger.info("Calling #{api_method} (#{params.inspect}) - #{time}")
+        Buddy.logger.info("RestAPI: #{api_method} (#{params.inspect}) - #{time}")
         result
       end
     end
