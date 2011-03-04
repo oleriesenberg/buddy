@@ -1,6 +1,42 @@
 module Buddy
   module Middleware
 
+    class Logger < ::Rails::Rack::Logger
+      private
+      def before_dispatch(env)
+        request = ActionDispatch::Request.new(env)
+        path = request.fullpath
+
+        method_s = request.request_method
+        method_s += " (#{env['rack.methodoverride.original_method']})" if env['rack.methodoverride.original_method']
+
+        info "\n\nStarted #{method_s} \"#{path}\" " \
+             "for #{request.ip} at #{Time.now.to_default_s}"
+      end
+    end
+
+    class MethodOverride
+      HTTP_METHODS = %w(GET HEAD PUT POST DELETE OPTIONS)
+
+      def initialize(app)
+        @app = app
+      end
+
+      def call(env)
+        request = Rack::Request.new(env)
+
+        method = 'GET' if request.post? && !request.xhr? && request.params['authenticity_token'].nil? && request.params['_method'].nil?
+        method = request.params['_method'].to_s.upcase unless request.params['_method'].nil?
+
+        if method && HTTP_METHODS.include?(method)
+          env['rack.methodoverride.original_method'] = env['REQUEST_METHOD']
+          env['REQUEST_METHOD'] = method
+        end
+
+       @app.call(env)
+      end
+    end
+
     # This Rack middleware checks the signed_request, and
     # appends the payload to Rails params.
     #
