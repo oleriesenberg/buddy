@@ -43,7 +43,7 @@ module Buddy
     end
 
     def install_url(options = {})
-      "http://www.facebook.com/connect/uiserver.php?app_id=#{Buddy.current_config['app_id']}&next=#{options[:next]}&display=page&canvas=1&legacy_return=1&method=permissions.request#{"&perms="+Buddy.current_config['perms'] if Buddy.current_config['perms']}"
+      "https://www.facebook.com/dialog/oauth?client_id=#{Buddy.current_config['app_id']}&redirect_uri=#{options[:next]}#{"&scope="+Buddy.current_config['perms'] if Buddy.current_config['perms']}"
     end
 
     def initialize(app_id, secret_key)
