@@ -21,7 +21,7 @@ module Buddy
 
       private
       def facebook_session
-        @facebook_session
+        session[:facebook_session]
       end
 
       def request_comes_from_facebook?
@@ -29,7 +29,7 @@ module Buddy
       end
 
       def application_is_installed?
-        !params[:fb][:oauth_token].blank?
+        facebook_session && facebook_session.secured?
       end
 
       def request_is_facebook_canvas?
@@ -49,22 +49,9 @@ module Buddy
         Buddy::Session.create(Buddy.current_config['app_id'], Buddy.current_config['secret'])
       end
 
-      def create_facebook_session
-        @facebook_session = new_facebook_session
-        @facebook_session.secure!(params[:fb][:user_id], params[:fb][:oauth_token], params[:fb][:expires])
-        @facebook_session.secured?
-      end
-
       def set_facebook_session
-        session_set = !@facebook_session.blank? && @facebook_session.secured?
-        unless session_set
-          session_set = create_facebook_session
-          session[:facebook_session] = @facebook_session if session_set
-        end
-        if session_set
-          Session.current = @facebook_session
-        end
-        return session_set
+        Session.current = facebook_session
+        return facebook_session.secured?
       end
 
       def ensure_facebook_session

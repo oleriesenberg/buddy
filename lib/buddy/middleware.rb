@@ -50,10 +50,10 @@ module Buddy
       def call(env)
         return @app.call(env) unless @condition.nil? || @condition.call(env)
 
-        request = Rack::Request.new(env)
+        @request = Rack::Request.new(env)
 
         signed_request = env['HTTP_X_SIGNED_REQUEST'].split(',').first if env['HTTP_X_SIGNED_REQUEST']
-        signed_request = request.params["signed_request"] unless signed_request
+        signed_request = @request.params["signed_request"] unless signed_request
         if signed_request
           signature, signed_params = signed_request.split('.')
 
@@ -62,7 +62,12 @@ module Buddy
           end
 
           signed_params = Yajl::Parser.new.parse(base64_url_decode(signed_params))
-          request.params[:fb] = signed_params
+          @request.params[:fb] = signed_params
+          set_session(signed_params)
+        elsif @request.cookies["fbs_#{Buddy.current_config['app_id']}"]
+          payload = @request.cookies["fbs_#{Buddy.current_config['app_id']}"].chomp('"')
+          payload.sub!('"', '') if payload.start_with?('"')
+          set_session(payload)
         end
 
         @app.call(env)
@@ -84,6 +89,15 @@ module Buddy
       def base64_url_decode(str)
         str = str + "=" * (6 - str.size % 6) unless str.size % 6 == 0
         return Base64.decode64(str.tr("-_", "+/"))
+      end
+
+      def set_session(payload)
+        uid          = payload['user_id'] || payload['uid']
+        access_token = payload['oauth_token'] || payload['access_token']
+        expires      = payload['expires']
+
+        @request.session['facebook_session'] = Buddy::Session.create(Buddy.current_config['app_id'], Buddy.current_config['secret'])
+        @request.session['facebook_session'].secure!(uid.to_i, access_token, expires)
       end
     end
   end
