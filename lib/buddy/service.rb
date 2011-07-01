@@ -23,7 +23,7 @@ module Buddy
         time = Benchmark.realtime do
           result = GraphApiClient.send(method, resource, :query => params).parsed_response
         end
-        Buddy.logger.info("GraphAPI: #{method} #{resource} - #{time}")
+        Buddy.logger.info("GraphAPI: #{method} #{resource} - #{time}") if Buddy.config['logging_enabled']
 
         raise OAuthException.new(result["error"]["message"]) if result["error"]
         result
@@ -70,7 +70,7 @@ module Buddy
         time = Benchmark.realtime do
           result = fun.call
         end
-        Buddy.logger.info("RestAPI: #{api_method} (#{params.inspect}) - #{time}")
+        Buddy.logger.info("RestAPI: #{api_method} (#{params.inspect}) - #{time}") if Buddy.config['logging_enabled']
         result
       end
     end
