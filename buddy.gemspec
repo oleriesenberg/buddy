@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   Gem::Specification.new do |s|
-    s.add_dependency(%q<mini_fb>, [">= 0.2.2"])
-    s.add_dependency(%q<yajl-ruby>, [">= 0"])
-    s.add_dependency(%q<httparty>, [">= 0"])
+    s.add_runtime_dependency('mini_fb', '>= 0.2.2')
+    s.add_runtime_dependency('yajl-ruby', '>= 0')
+    s.add_runtime_dependency('httparty', '>= 0')
   end
 end
