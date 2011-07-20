@@ -67,7 +67,7 @@ module Buddy
         elsif @request.cookies["fbs_#{Buddy.current_config['app_id']}"]
           payload = @request.cookies["fbs_#{Buddy.current_config['app_id']}"].chomp('"')
           payload.sub!('"', '') if payload.start_with?('"')
-          set_session(payload)
+          set_session(Rack::Utils.parse_query(payload))
         end
 
         @app.call(env)
