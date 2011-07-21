@@ -97,7 +97,7 @@ module Buddy
         expires      = payload['expires']
 
         @request.session['facebook_session'] = Buddy::Session.create(Buddy.current_config['app_id'], Buddy.current_config['secret'])
-        @request.session['facebook_session'].secure!(uid.to_i, access_token, expires.to_i)
+        @request.session['facebook_session'].secure!(uid.to_i, access_token, expires.to_i) unless uid.blank? or access_token.blank?
       end
     end
   end
