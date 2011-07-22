@@ -7,12 +7,8 @@ module Buddy
         controller.helper_method :request_comes_from_facebook?
       end
 
-      def js_redirect_to(uri, target = nil)
-        if request_is_facebook_canvas? and !request_is_facebook_tab? and !target.nil?
-          render(:text => "<script>#{target.to_s}.location.href='#{uri}'</script>", :layout => false)
-        elsif request_is_facebook_canvas? and !request_is_facebook_tab?
-          render(:text => "<script>self.location.href='#{uri}'</script>", :layout => false)
-        end
+      def js_redirect_to(uri, target = 'self')
+        render(:text => "<script>#{target.to_s}.location.href='#{uri}'</script>", :layout => false) if !request_is_facebook_tab?
       end
 
       def top_redirect_to(uri)
@@ -33,11 +29,11 @@ module Buddy
       end
 
       def request_is_facebook_canvas?
-        params[:fb][:profile_id].blank?
+        params[:fb] && params[:fb][:profile_id].blank?
       end
 
       def request_is_facebook_tab?
-        !params[:fb][:profile_id].blank?
+        params[:fb] && !params[:fb][:profile_id].blank?
       end
 
       def clear_facebook_session_information
