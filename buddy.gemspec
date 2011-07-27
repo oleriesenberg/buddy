@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Ole Riesenberg"]
   s.email       = ["or@buddybrand.com"]
   s.homepage    = "http://rubygems.org/gems/buddy"
-  s.summary     = %q{buddybrand's facebook library}
-  s.description = %q{buddybrand's facebook library}
+  s.summary     = %q{Facebook library focusing on getting the work done.}
+  s.description = %q{Facebook library focusing on getting the work done.}
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

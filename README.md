@@ -52,10 +52,9 @@ If the user authorized the application you can do API calls like this:
 
 released under the **MIT license**
 
-Copyright (c) 2010:
+Copyright (c) 2011:
 
 * Ole Riesenberg
-* Klaus Breyer
 
 Some concepts and code adapted from [Facebooker](http://github.com/mmangino/facebooker)
 
