@@ -16,7 +16,7 @@ module Buddy
   @buddy_config = {}
 
   class << self
-    attr_accessor :logger, :caller
+    attr_accessor :logger, :rest_api_client
 
     def load_configuration(yaml)
       return false unless File.exist?(yaml)
