@@ -38,12 +38,6 @@ module Buddy
     class Caller
       include Observable
       def call(api_method, params = {}, options = {})
-        begin
-          application = options[:app] || 'default'
-        rescue NoMethodError => e
-          raise ArgumentError.new("app not specified in buddy.yml")
-        end
-
         changed
         notify_observers(api_method, params, options)
 
@@ -58,8 +52,8 @@ module Buddy
                 options[:params] = params
                 MiniFB.rest(params[:access_token], api_method, options)
               else
-                MiniFB.call(Buddy.buddy_config[application]["api_key"],
-                  Buddy.buddy_config[application]["secret"],
+                MiniFB.call(Buddy.config["api_key"],
+                  Buddy.config["secret"],
                   api_method,
                   params.stringify_keys)
               end
