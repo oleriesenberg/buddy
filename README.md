@@ -5,7 +5,7 @@ Buddy is a lightweight Facebook library for Rails 3.
 ## Overview
 
 * Support for iFrame Apps
-* Uses signed\_request parameters for authentication
+* Supports signed\_request and cookies for authentication
 * Supports the Graph API and old REST API
 * Fully compatible with **Rails 3** and **Ruby 1.9.2**
 
@@ -17,7 +17,7 @@ Add the following to your Gemfile
 
 or for the latest Git version
 
-    gem 'buddy', :git => 'git://github.com/buddybrand/buddy.git'
+    gem 'buddy', :git => 'git://github.com/Hoodow/buddy.git'
 
 Generate and edit config/buddy.yml
 
@@ -52,9 +52,7 @@ If the user authorized the application you can do API calls like this:
 
 released under the **MIT license**
 
-Copyright (c) 2011:
-
-* Ole Riesenberg
+Copyright (c) 2011 Ole Riesenberg
 
 Some concepts and code adapted from [Facebooker](http://github.com/mmangino/facebooker)
 
