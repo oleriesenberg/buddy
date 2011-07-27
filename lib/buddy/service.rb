@@ -6,7 +6,7 @@ module Buddy
   module Service
     class << self
       def call(api_method, params = {}, options = {})
-        Buddy.caller.call(api_method, params, options)
+        Buddy.rest_api_client.call(api_method, params, options)
       end
 
       def get(resource, params = {})
@@ -35,7 +35,7 @@ module Buddy
       base_uri 'https://graph.facebook.com'
     end
 
-    class Caller
+    class RestApiClient
       include Observable
       def call(api_method, params = {}, options = {})
         changed

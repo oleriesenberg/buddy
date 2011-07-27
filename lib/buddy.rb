@@ -45,7 +45,7 @@ buddy_config = File.join(Bundler.root, "config", "buddy.yml")
 
 BUDDY = Buddy.load_configuration(buddy_config)
 Buddy.logger = Rails.logger
-Buddy.caller = Buddy::Service::Caller.new
+Buddy.rest_api_client = Buddy::Service::RestApiClient.new
 
 require 'buddy/rails/url_helper'
 require 'buddy/rails/controller'
