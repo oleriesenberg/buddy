@@ -1,5 +1,5 @@
 require 'buddy'
-require 'buddy/rails/url_helper'
+require 'buddy/rails/helpers'
 require 'rails'
 
 module Buddy
@@ -8,9 +8,11 @@ module Buddy
       app.config.middleware.swap(::Rails::Rack::Logger, Buddy::Middleware::Logger)
       app.config.middleware.insert_before(Buddy::Middleware::Logger, Buddy::Middleware::MethodOverride)
       app.config.middleware.insert_before(ActionDispatch::ParamsParser, Buddy::Middleware::ParamsParser)
-
-      ActionView::Helpers::UrlHelper.send(:include, Buddy::Rails::UrlHelper)
-      Buddy.logger = ::Rails.logger
     end
+
+    ActionView::Helpers::UrlHelper.send(:include, Buddy::Helpers::UrlFor)
+    ActionController::Base.send(:include, Buddy::Helpers::UrlFor)
+    ActionController::Base.send(:include, Buddy::Rails::Controller)
+    Buddy.logger = ::Rails.logger
   end
 end

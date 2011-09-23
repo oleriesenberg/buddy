@@ -1,7 +1,7 @@
 module Buddy
   module Rails
     module Controller
-      include Buddy::Rails::UrlHelper
+      include Buddy::Helpers::UrlFor
 
       def self.included(controller)
         controller.helper_method :request_comes_from_facebook?

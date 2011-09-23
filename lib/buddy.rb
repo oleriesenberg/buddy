@@ -47,8 +47,7 @@ BUDDY = Buddy.load_configuration(buddy_config)
 Buddy.logger = Rails.logger
 Buddy.rest_api_client = Buddy::Service::RestApiClient.new
 
-require 'buddy/rails/url_helper'
+require 'buddy/rails/helpers'
 require 'buddy/rails/controller'
-require 'buddy/rails/controller_extensions'
 
 require 'buddy/railtie'
