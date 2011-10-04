@@ -2,7 +2,7 @@ module Buddy
   module Helpers
     module UrlFor
       def url_for(options = nil)
-        ::Rails.logger.debug("BUUUUUUDDY")
+        return options unless options.is_a?(Hash)
         only_path = options[:only_path] || false
         canvas = options.delete(:canvas)
         options.merge!({ :only_path => true }) if options.is_a?(Hash) && canvas != false
