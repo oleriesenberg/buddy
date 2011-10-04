@@ -9,7 +9,7 @@ module Buddy
 
         url = super(options)
 
-        if url[0..6] == 'http://'
+        if url[0..6] == 'http://' or url[0..7] == 'https://'
           url
         elsif options.is_a?(Hash) && canvas == false
           base = only_path ? '' : Buddy.current_config["callback_url"]

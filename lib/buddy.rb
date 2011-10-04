@@ -20,7 +20,7 @@ module Buddy
 
     def load_configuration(yaml)
       return false unless File.exist?(yaml)
-      @buddy_config = YAML.load(ERB.new(File.read(yaml)).result)[::Rails.env]
+      @buddy_config = YAML.load(ERB.new(File.read(yaml)).result)[::Rails.env] || false
 
       unless self.config['default'].nil?
         ActiveSupport::Deprecation.warn('Support for multiple apps has been removed and your config format is deprecated. Please remove your app keys (or just the "default" key)')
