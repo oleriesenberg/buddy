@@ -10,9 +10,12 @@ module Buddy
       app.config.middleware.insert_before(ActionDispatch::ParamsParser, Buddy::Middleware::ParamsParser)
     end
 
+    initializer "buddy.configure_logger", :after => :initialize_logger do |app|
+      Buddy.logger = ::Rails.logger
+    end
+
     ActionView::Helpers::UrlHelper.send(:include, Buddy::Helpers::UrlFor)
     ActionController::Base.send(:include, Buddy::Helpers::UrlFor)
     ActionController::Base.send(:include, Buddy::Rails::Controller)
-    Buddy.logger = ::Rails.logger
   end
 end
