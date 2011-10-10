@@ -62,7 +62,9 @@ module Buddy
           end
 
           signed_params = Yajl::Parser.new.parse(base64_url_decode(signed_params))
-          env['rack.request.form_hash'].merge!({'fb' => signed_params})
+
+          env['rack.request.form_hash'] ? env['rack.request.form_hash'].merge!({'fb' => signed_params}) : env['rack.request.form_hash'] = {'fb' => signed_params}
+
           set_session(signed_params)
         elsif @request.cookies["fbs_#{Buddy.current_config['app_id']}"]
           payload = @request.cookies["fbs_#{Buddy.current_config['app_id']}"].chomp('"')
