@@ -42,11 +42,11 @@ module Buddy
       end
 
       def new_facebook_session
-        Buddy::Session.create(Buddy.current_config['app_id'], Buddy.current_config['secret'])
+        Buddy::Session::User.create(Buddy.config['app_id'], Buddy.config['secret'])
       end
 
       def set_facebook_session
-        Session.current = facebook_session
+        Buddy::Session::User.current = facebook_session
         return facebook_session.secured?
       end
 
