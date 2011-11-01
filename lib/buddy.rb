@@ -9,8 +9,9 @@ require 'httparty'
 require 'buddy/middleware'
 
 require 'buddy/user'
-require 'buddy/session'
 require 'buddy/service'
+require 'buddy/session'
+
 
 module Buddy
   @buddy_config = {}
