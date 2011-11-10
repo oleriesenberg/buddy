@@ -24,13 +24,21 @@ module Buddy
       end
 
       def get(resource, params = {})
-        params.merge!(:access_token => access_token) unless params[:access_token]
-        Buddy::Service.get(resource, params)
+        graph_http_req(:get, resource, params)
       end
 
       def post(resource, params = {})
+        graph_http_req(:post, resource, params)
+      end
+
+      def delete(resource, params = {})
+        graph_http_req(:delete, resource, params)
+      end
+
+      private
+      def graph_http_req(method, resource, params = {})
         params.merge!(:access_token => access_token) unless params[:access_token]
-        Buddy::Service.post(resource, params)
+        Buddy::Service.send(method, resource, params)
       end
     end
   end

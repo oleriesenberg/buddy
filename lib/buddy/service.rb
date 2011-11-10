@@ -17,6 +17,10 @@ module Buddy
         call_graph(:post, resource, params)
       end
 
+      def delete(resource, params = {})
+        call_graph(:delete, resource, params)
+      end
+
       private
       def call_graph(method, resource, params)
         result = nil
@@ -25,7 +29,7 @@ module Buddy
         end
         Buddy.logger.info("GraphAPI: #{method} #{resource} - #{time}") if Buddy.config['logging_enabled']
 
-        raise OAuthException.new(result["error"]["message"]) if result["error"]
+        raise OAuthException.new(result["error"]["message"]) if result.is_a?(Hash) && result["error"]
         result
       end
     end
