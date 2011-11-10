@@ -57,7 +57,7 @@ module Buddy
         if signed_request
           signature, signed_params = signed_request.split('.')
 
-          unless signed_request_is_valid?(Buddy.config['secret'], signature, signed_params)
+          unless signature && signed_params && signed_request_is_valid?(Buddy.config['secret'], signature, signed_params)
             return Rack::Response.new(["Invalid Facebook signature"], 400).finish
           end
 
@@ -77,7 +77,7 @@ module Buddy
 
       private
 
-     # This function takes the app secret and the signed request, and verifies if the request is valid.
+     # This method takes the app secret and the signed request, and verifies if the request is valid.
       def signed_request_is_valid?(secret, signature, params)
         sig = base64_url_decode(signature)
         expected_sig = OpenSSL::HMAC.digest('SHA256', secret, params.tr("-_", "+/"))
