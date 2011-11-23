@@ -25,7 +25,11 @@ module Buddy
       def call(env)
         request = Rack::Request.new(env)
 
-        method = 'GET' if request.post? && !request.xhr? && request.params['authenticity_token'].nil? && request.params['_method'].nil?
+        method = 'GET' if request.post? &&
+                          !request.xhr? &&
+                          request.params['authenticity_token'].nil? &&
+                          request.params['_method'].nil? &&
+                          env['HTTP_X_HUB_SIGNATURE'].nil?
         method = request.params['_method'].to_s.upcase unless request.params['_method'].nil?
 
         if method && HTTP_METHODS.include?(method)
