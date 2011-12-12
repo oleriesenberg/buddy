@@ -11,6 +11,11 @@ module Buddy
         end
       end
 
+      def initialize(app_id, secret_key)
+        @app_id         = app_id
+        @secret_key     = secret_key
+      end
+
       def access_token
         @access_token ||= Buddy::Service::GraphApiClient.get('/oauth/access_token', :query => {
           :client_id => self.class.app_id,
