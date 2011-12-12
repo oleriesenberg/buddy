@@ -3,14 +3,6 @@ module Buddy
     class User < Base
 
       class << self
-        def app_id
-          Buddy.current_config["app_id"]
-        end
-
-        def secret_key
-           Buddy.current_config["secret"]
-        end
-
         def current
           Thread.current['facebook_session']
         end
