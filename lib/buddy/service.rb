@@ -23,14 +23,25 @@ module Buddy
 
       private
       def call_graph(method, resource, params)
+        opts = extract_options(params)
+
         result = nil
         time = Benchmark.realtime do
-          result = GraphApiClient.send(method, resource, :query => params).parsed_response
+          result = GraphApiClient.send(method, resource, {:query => params}.merge(opts)).parsed_response
         end
         Buddy.logger.info("GraphAPI: #{method} #{resource} - #{time}") if Buddy.config['logging_enabled']
 
         raise OAuthException.new(result["error"]["message"]) if result.is_a?(Hash) && result["error"]
         result
+      end
+
+      def extract_options(params)
+        opts = {}
+        opts[:base_uri] = HTTParty.normalize_base_uri(params.delete(:base_uri)) unless params[:base_uri].nil?
+        [:format, :headers, :maintain_method_across_redirects, :no_follow, :parser].each do |option|
+          opts[option] = params.delete(option) unless params[option].nil?
+        end
+        opts
       end
     end
 
