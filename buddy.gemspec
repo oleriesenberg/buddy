@@ -1,25 +1,23 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "buddy/version"
+require File.expand_path('../lib/buddy/version', __FILE__)
 
-Gem::Specification.new do |s|
-  s.name        = "buddy"
-  s.version     = Buddy::VERSION
-  s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Ole Riesenberg"]
-  s.email       = ["or@buddybrand.com"]
-  s.homepage    = "http://rubygems.org/gems/buddy"
-  s.summary     = %q{Facebook library focusing on getting the work done.}
-  s.description = %q{Facebook library focusing on getting the work done.}
+Gem::Specification.new do |gem|
+  gem.authors       = ["Ole Riesenberg"]
+  gem.email         = ["or@oleriesenberg.com"]
+  gem.description   = %q{Facebook library focusing on getting the work done.}
+  gem.summary       = %q{Facebook library focusing on getting the work done.}
+  gem.homepage      = "http://rubygems.org/gems/buddy"
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  gem.files         = `git ls-files`.split($\)
+  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  gem.name          = "buddy"
+  gem.require_paths = ["lib"]
+  gem.version       = Buddy::VERSION
 
-  Gem::Specification.new do |s|
-    s.add_runtime_dependency('mini_fb', '>= 0.2.2')
-    s.add_runtime_dependency('yajl-ruby', '>= 0')
-    s.add_runtime_dependency('httparty', '>= 0')
-  end
+  gem.add_runtime_dependency "mini_fb", ">= 0.2.2"
+  gem.add_runtime_dependency "yajl-ruby", ">= 0"
+  gem.add_runtime_dependency "httparty", ">= 0"
+
+  gem.add_development_dependency "rake"
 end
